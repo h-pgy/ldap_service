@@ -37,7 +37,7 @@ def conexao_ldap():
 
         teste = teste_connection(user, passw)
 
-        return jsonify(teste), 201
+        return jsonify(teste), 200
     except Exception as e:
         abort(500, description = str(e))
     
