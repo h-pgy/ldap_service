@@ -12,6 +12,8 @@ def teste_connection(user, passw):
     conn.unbind()
     assert conn.closed == True, 'Conexao permaneceu aberta por alguma razao'
 
+    resp = {'request_status' : 'success', 'response' : response}
+
     return resp
 
 app = Flask(__name__)
@@ -20,12 +22,12 @@ app = Flask(__name__)
 @app.errorhandler(404)
 def not_found(e):
 
-    return jsonify{'errorCode' : 404, 'message' : 'Rota nao implementada'}, 404
+    return jsonify({'request_status' : 'failed', 'errorCode' : 404, 'message' : 'Rota nao implementada'}), 404
 
 @app.errorhandler(500)
 def internal_error(e):
 
-    return jsonify{'errorCode' : 500, 'message' : f'Erro interno no servidor: {e}'}, 500
+    return jsonify({'request_status': 'failed', 'errorCode': 500, 'message': f'Erro interno no servidor: {e}'}), 500
 
 @app.route('/conexao_ldap/', methods = ['POST'])
 def conexao_ldap():
