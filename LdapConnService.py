@@ -18,14 +18,14 @@ app = Flask(__name__)
 
 
 @app.errorhandler(404)
-    def not_found(e):
+def not_found(e):
 
-        return jsonify{'errorCode' : 404, 'message' : 'Rota nao implementada'}, 404
+    return jsonify{'errorCode' : 404, 'message' : 'Rota nao implementada'}, 404
 
-@app.errorhandler(500):
-    def internal_error(e):
+@app.errorhandler(500)
+def internal_error(e):
 
-        return jsonify{'errorCode' : 500, 'message' : f'Erro interno no servidor: {e}'}, 500
+    return jsonify{'errorCode' : 500, 'message' : f'Erro interno no servidor: {e}'}, 500
 
 @app.route('/conexao_ldap/', methods = ['POST'])
 def conexao_ldap():
