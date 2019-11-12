@@ -45,6 +45,6 @@ def conexao_ldap():
 
 if __name__ == '__main__':
     
-    app.run(host = CONFIG_SERVICO.host, port = CONFIG_SERVICO.port, debug = True)
+    app.run(host = CONFIG_SERVICO['host'], port = CONFIG_SERVICO['port'], debug = True)
     
 
