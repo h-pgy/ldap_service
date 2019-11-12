@@ -12,7 +12,7 @@ def teste_connection(user, passw):
     conn.unbind()
     assert conn.closed == True, 'Conexao permaneceu aberta por alguma razao'
 
-    resp = {'request_status' : 'success', 'response' : response}
+    resp = {'request_status' : 'success', 'response' : resp}
 
     return resp
 
@@ -29,12 +29,52 @@ def internal_error(e):
 
     return jsonify({'request_status': 'failed', 'errorCode': 500, 'message': f'Erro interno no servidor: {e}'}), 500
 
+@app.errorhandler(405)
+def not_allowed(e):
+
+    return jsonify({'request_status': 'failed', 'errorCode': 405, 'message': f'Metodo nao permitido: {e}'}), 405
+
+
+
+def test_form_keys(form):
+    chaves_aceitas = {
+        'passw' : ['passw', 'password', 'senha'],
+        'user' : ['user', 'usuario']
+    }
+
+    for key in chaves_aceitas['passw']:
+
+        passw = request.form.get(key, None)
+        if passw is not None:
+            break
+    else:
+        chaves_passw = ','.join(chaves_aceitas['passw'])
+        message = f'Chave para password deve estar presente. Chaves aceitas {chaves_passw}'
+        raise KeyError(message)
+
+    for key in chaves_aceitas['user']:
+
+        user = request.form.get(key, None)
+        if user is not None:
+            break
+    else:
+        chaves_passw = ','.join(chaves_aceitas['user'])
+        message = f'Chave para usuario deve estar presente. Chaves aceitas {chaves_passw}'
+        raise KeyError(message)
+
+    return user, passw
+
+
+
 @app.route('/conexao_ldap', methods = ['POST'])
 def conexao_ldap():
-    try:
-        user = request.form.get('user')
-        passw = request.form.get('passw')
 
+    try:
+        user, passw = test_form_keys(request.form)
+    except Exception as e:
+        return jsonify({'request_status': 'failed', 'errorCode': 404, 'message': str(e)}), 404
+
+    try:
         teste = teste_connection(user, passw)
 
         return jsonify(teste), 200
