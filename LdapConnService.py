@@ -29,7 +29,7 @@ def internal_error(e):
 
     return jsonify({'request_status': 'failed', 'errorCode': 500, 'message': f'Erro interno no servidor: {e}'}), 500
 
-@app.route('/conexao_ldap/', methods = ['POST'])
+@app.route('/conexao_ldap', methods = ['POST'])
 def conexao_ldap():
     try:
         user = request.form.get('user')
