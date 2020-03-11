@@ -22,7 +22,7 @@ app = Flask(__name__)
 @app.errorhandler(404)
 def not_found(e):
 
-    return jsonify({'request_status' : 'failed', 'errorCode' : 404, 'message' : 'Rota nao implementada'}), 404
+    return jsonify({'request_status' : 'failed', 'errorCode' : 404, 'message' : 'Rota nao implementada: {e}'}), 404
 
 @app.errorhandler(500)
 def internal_error(e):
@@ -44,7 +44,7 @@ def test_form_keys(form):
 
     for key in chaves_aceitas['passw']:
 
-        passw = request.form.get(key, None)
+        passw = form.get(key, None)
         if passw is not None:
             break
     else:
@@ -54,7 +54,7 @@ def test_form_keys(form):
 
     for key in chaves_aceitas['user']:
 
-        user = request.form.get(key, None)
+        user = form.get(key, None)
         if user is not None:
             break
     else:
