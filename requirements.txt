@@ -9,5 +9,5 @@ ldap3==2.7
 MarkupSafe==1.1.1
 pyasn1==0.4.8
 requests==2.23.0
-urllib3==1.25.8
+urllib3==1.26.5
 Werkzeug==1.0.0
